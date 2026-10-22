@@ -1,0 +1,4 @@
+interface:
+  display_name: "OAuth Protocol Review"
+  short_description: "Establish protocol findings from code and flows"
+  default_prompt: "Use $oauth-protocol-review to inspect the requested flow and report supported findings."
