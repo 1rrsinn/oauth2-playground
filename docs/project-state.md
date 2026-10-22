@@ -12,6 +12,8 @@ Setup date: October 22, 2026.
 - Implement Lab 1 as a Client Credentials experiment with a custom authorization
   server, resource server, and CLI client in TypeScript, including tests and
   documentation. This implementation request authorizes a complete example.
+- Upgrade Lab 1 to Node.js 24 LTS and TypeScript 6 in one PR, including its
+  lockfile, Linux/Windows CI, documentation, tests, and aligned Dependabot rules.
 - Communicate in German. Keep AI rules, skills and metadata, agent definitions,
   documentation/READMEs, code comments, logs, CLI messages, and test output in
   English, as defined centrally in `AGENTS.md`.
@@ -36,7 +38,7 @@ Report runtime availability and performed checks separately.
 ## Lab 1: implemented
 
 [Lab 1](../labs/01-client-credentials/README.md) is an independent npm package
-using Node.js 22, TypeScript, Express 5, and `jose` 6. The three processes use
+using Node.js 24 LTS, TypeScript 6, Express 5, and `jose` 6. The three processes use
 `client_secret_basic`, restricted scopes, and RS256 JWTs valid for 60 seconds.
 The RS needs only the public key and expected issuer/audience.
 Registration, client secret, and keys are generated locally by setup.
@@ -73,6 +75,15 @@ On October 22, 2026, `npm.cmd run check` completed with typecheck, ESLint,
 Prettier, build, and 59 passing HTTP/process/setup tests including subtests.
 Local startup configuration was generated; repeating setup preserved it.
 Details and limitations are recorded in the lab README.
+
+The coordinated toolchain upgrade pins Node.js `24.22.1`, TypeScript `6.0.3`,
+and Node type declarations `24.19.2`. A clean install and all 59 existing tests
+passed locally on Windows with npm `11.19.1`; the audit found no known
+vulnerabilities. The dedicated upgrade PR runs the same checks on Ubuntu and
+Windows. Dependabot retains compatible updates while deferring Node type majors
+above 24 and TypeScript versions outside the lint toolchain's supported range.
+The original implementation plan records the initial Node 22 baseline;
+the lab README records the current runtime and upgrade verification.
 
 ## Original setup verification
 
