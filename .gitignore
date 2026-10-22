@@ -1,0 +1,29 @@
+# Local credentials and runtime configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.key
+*.p12
+*.pfx
+secrets/
+# Store private PEM files under secrets/ or .local/;
+# public PEM certificates may be part of a lab.
+
+# Ephemeral output and network captures requiring redaction
+*.log
+*.har
+.local/
+.tmp/
+tmp/
+
+# Common build and tooling output for labs
+node_modules/
+dist/
+coverage/
+.venv/
+__pycache__/
+
+# Operating system files
+.DS_Store
+Thumbs.db
