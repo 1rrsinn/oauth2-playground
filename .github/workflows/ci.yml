@@ -39,8 +39,12 @@ jobs:
         with:
           node-version-file: labs/01-client-credentials/.node-version
           package-manager-cache: false
+      - name: Report runtime versions
+        run: |
+          node --version
+          npm --version
       - name: Install locked dependencies without lifecycle scripts
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --engine-strict --ignore-scripts --no-audit --no-fund
       - name: Check types, style, build, and real HTTP/process behavior
         run: npm run check
 
@@ -61,5 +65,11 @@ jobs:
         with:
           node-version-file: labs/01-client-credentials/.node-version
           package-manager-cache: false
+      - name: Report runtime versions
+        run: |
+          node --version
+          npm --version
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --engine-strict --ignore-scripts --no-audit --no-fund
       - name: Audit production and development dependencies
         run: npm audit --audit-level=high

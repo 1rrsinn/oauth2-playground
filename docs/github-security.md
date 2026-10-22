@@ -16,6 +16,21 @@ GitHub schedules use UTC: CI runs Mondays at 06:17 UTC; CodeQL runs Mondays at
 inactivity. Dependabot checks Actions and Lab 1 npm dependencies weekly on Monday
 at 07:00 Europe/Berlin. Update PRs require review; they do not auto-merge.
 
+Lab 1's coordinated baseline is Node.js `24.22.1` LTS, TypeScript `6.0.3`, and
+`@types/node` `24.19.2`. Dependabot's npm version rules ignore Node type versions
+`>=25.0.0` and TypeScript versions `>=6.1.0`: declarations must match Node 24,
+and typescript-eslint `8.72.0` supports TypeScript `>=4.8.4 <6.1.0`. Compatible
+minor/patch proposals remain grouped; other dependency majors remain visible
+for individual review. Revisit these two bounds when deliberately upgrading
+the runtime or lint/compiler toolchain. Security alerts and npm audit remain
+enabled even when an update falls outside the compatibility bounds.
+
+The fixed runtime file and the package's `engines.node` must be updated together.
+Dependabot does not maintain `.node-version` through the npm entry. CI reports
+its Node/npm versions and uses `npm ci --engine-strict --ignore-scripts` on both
+operating systems and in the audit job. Required job names remain stable for
+the existing branch ruleset.
+
 Every external Action uses a full 40-character commit SHA with its release in a
 comment. Pins were resolved from the upstream repositories' Git references;
 annotated tags were dereferenced to their commit. Dependabot updates Action pins.
@@ -99,3 +114,6 @@ does not detect every possible secret, including arbitrary custom lab secrets.
 - [CodeQL code scanning](https://docs.github.com/en/code-security/concepts/code-scanning/codeql/codeql-code-scanning)
 - [Repository rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
 - [Dependabot configuration](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
+- [Node.js 24.22.1 LTS](https://nodejs.org/en/blog/release/v24.22.1)
+- [TypeScript 6.0](https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/)
+- [typescript-eslint dependency compatibility](https://typescript-eslint.io/users/dependency-versions/)

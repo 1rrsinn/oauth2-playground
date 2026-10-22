@@ -19,6 +19,14 @@ updates:
       timezone: Europe/Berlin
     open-pull-requests-limit: 5
     versioning-strategy: increase
+    ignore:
+      # Keep Node declarations aligned with the lab's Node 24 runtime.
+      - dependency-name: '@types/node'
+        versions: ['>=25.0.0']
+      # typescript-eslint 8.72.0 supports TypeScript >=4.8.4 <6.1.0.
+      # Revisit this bound when upgrading the compiler and lint tooling together.
+      - dependency-name: typescript
+        versions: ['>=6.1.0']
     groups:
       minor-and-patch:
         applies-to: version-updates
