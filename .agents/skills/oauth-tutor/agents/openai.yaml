@@ -1,0 +1,4 @@
+interface:
+  display_name: "OAuth Tutor"
+  short_description: "Explain protocols through concrete message flows"
+  default_prompt: "Use $oauth-tutor to explain the requested flow through a concrete example."
