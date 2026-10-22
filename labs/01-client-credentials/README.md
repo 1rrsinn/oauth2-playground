@@ -6,11 +6,15 @@ separate TypeScript processes. There is no user login.
 
 ## Start in PowerShell
 
-Requires Node.js 22 from 22.23.2 onward, with npm. From the project root:
+Requires Node.js 24 LTS, version `24.22.1` or a newer 24.x release, with npm.
+The reproducible CI runtime is fixed to `24.22.1` in `.node-version`. Select
+that version with your Node version manager or install it before opening the
+lab's terminals. From the project root:
 
 ```powershell
 Set-Location labs/01-client-credentials
-npm.cmd ci
+node --version
+npm.cmd ci --engine-strict --ignore-scripts
 npm.cmd run build
 npm.cmd run setup
 ```
@@ -242,6 +246,20 @@ versions. Build and tests write only under `.tmp/`. Tests use free loopback
 ports and their own temporary configurations; the normal `.local/` directory is
 not changed.
 
+The current toolchain uses Node.js `24.22.1`, TypeScript `6.0.3`, and
+`@types/node` `24.19.2`. TypeScript 6.0 is within typescript-eslint `8.72.0`'s
+supported range (`>=4.8.4 <6.1.0`). Strict compiler and lint settings are
+retained. CI reads `.node-version`, reports Node/npm versions, and installs with
+`--engine-strict --ignore-scripts` on Ubuntu 24.04 and Windows 2025. Dependency
+installation therefore rejects an unsupported Node runtime.
+
+Dependabot continues proposing Node 24 type updates and TypeScript 6.0 patches.
+Newer Node type majors and TypeScript versions from 6.1 onward need a
+coordinated runtime/tooling review. Update `.node-version` and `engines.node`
+together when raising the Node baseline; Dependabot's npm configuration does not
+update the runtime file. The dependency policy is documented in the
+[GitHub security setup](../../docs/github-security.md).
+
 HTTP tests use actual listeners. They check valid requests, registered scope
 boundaries, incorrect client credentials, duplicate/malformed requests, size
 limits, and rate limiting. RS tests cover tampered, incorrectly signed, expired,
@@ -249,8 +267,25 @@ and correctly signed tokens with invalid claims. CLI process tests cover
 success, error codes, timeouts, rejected redirects, and redacted output,
 including malicious error responses.
 
-Verification on October 22, 2026, on Windows with Node.js `v22.23.2` and npm
-`10.9.8`: `npm.cmd run check` completed with exit code 0; 59 tests including
+### Node 24 upgrade verification
+
+On October 22, 2026, Windows checks with Node.js `v24.22.1` and npm `11.19.1`
+passed: clean
+`npm.cmd ci --engine-strict --ignore-scripts --no-audit --no-fund`,
+`npm.cmd run check`, and `npm.cmd audit --audit-level=high`. All 59 tests,
+including subtests, passed with no failures or skips; the audit reported zero
+known vulnerabilities. `npm.cmd ls --depth=0` confirmed the pinned tool
+versions. The test runtime came from the official portable Node archive,
+verified against its published SHA-256 checksum. HTTP/process tests require
+loopback access; the restricted environment initially blocked these connections
+with `EACCES`, and the identical check passed when run with the required local
+network access. The upgrade PR also runs the complete check on Linux and Windows
+through CI.
+
+### Initial Node 22 verification
+
+Initial verification on October 22, 2026, on Windows with Node.js `v22.23.2` and
+npm `10.9.8`: `npm.cmd run check` completed with exit code 0; 59 tests including
 subtests passed, with none failed or skipped. Typecheck, ESLint, Prettier, and
 build also passed. The integration test ran AS, RS, and client as separate Node
 processes and terminated them afterward.
@@ -267,10 +302,10 @@ There is no browser flow to verify.
 ## Intentional simplifications and sources
 
 Loopback HTTP makes messages visible in this experiment. External OAuth
-connections require TLS. This lab is not published. Client secrets belong in
-confidential clients, not shipped browser code. Short token lifetimes and local
-rate limiting bound the experiment; production secret management and distributed
-abuse protection are not included.
+connections require TLS. The servers run locally and are not deployed. Client
+secrets belong in confidential clients, not shipped browser code. Short token
+lifetimes and local rate limiting bound the experiment; production secret
+management and distributed abuse protection are not included.
 
 The structure follows RFC 9068 without establishing full standards compliance.
 Public keys are provisioned locally; there is no discovery, JWKS, key rotation,
