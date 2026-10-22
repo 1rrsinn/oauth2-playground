@@ -1,0 +1,4 @@
+interface:
+  display_name: "OAuth Lab"
+  short_description: "Plan and build small, observable protocol labs"
+  default_prompt: "Use $oauth-lab for the requested learning experiment and keep its scope focused on the learning question."
