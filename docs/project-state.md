@@ -64,7 +64,7 @@ The AI infrastructure and Lab 1 are present. The lab has strict TypeScript,
 lint, and format checks, real HTTP tests, and an integration test with three
 separate processes. Checks also establish that a token remains valid at the RS
 after the AS stops, and that expired tokens are rejected.
-The project is being connected to the public GitHub repository
+The project is published in the public GitHub repository
 `1rrsinn/oauth2-playground` with CI and repository security controls.
 There is no deployment or real tenant data. Configuration and hosted verification
 are recorded in [GitHub security setup](github-security.md).

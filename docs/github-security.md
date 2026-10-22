@@ -61,7 +61,37 @@ and hosted checks are recorded below after bootstrap and verification.
 - Dependency graph, Dependabot alerts, malware alerts, and security-update PRs:
   enabled.
 - Secret Protection and push protection: already enabled and retained.
-- Main-branch rules and hosted workflow results: pending initial publication.
+- `Protect main`: active for the default branch, with no bypass actors. Pull
+  requests, up-to-date branches, resolved review conversations, and successful
+  checks are required. Deletion and force pushes are blocked; merges use squash
+  commits and preserve a linear history.
+- Required checks are the Linux and Windows Lab 1 jobs, dependency audit,
+  Dependency Review, and both CodeQL analysis jobs. Their source is restricted
+  to GitHub Actions. CodeQL results also block high/critical security findings
+  and error-level code scanning findings.
+- Required human approvals remain zero for this single-maintainer learning
+  repository: an author cannot approve their own PR. CODEOWNERS still identifies
+  the maintainer; PR checks and conversation resolution remain mandatory.
+
+## Hosted verification
+
+The initial published snapshot contains the same 52 maintained files as the
+locally verified snapshot; a Git tree comparison found no content differences.
+The bootstrap used the authenticated GitHub web editor because the connector
+returned a write-permission error and no local Git credential was configured.
+Neither runtime secrets nor ignored build output were published.
+
+- [CI on the initial complete snapshot](https://github.com/1rrsinn/oauth2-playground/actions/runs/39837313756):
+  successful Linux/Windows checks and npm dependency audit.
+- [CodeQL on the initial complete snapshot](https://github.com/1rrsinn/oauth2-playground/actions/runs/39837313791):
+  successful JavaScript/TypeScript and Actions analysis.
+- PR-only Dependency Review is verified on the setup-documentation PR before
+  that PR merges. Initial Dependabot proposals are left for separate review;
+  this setup does not approve or merge dependency upgrades.
+
+Repository policies complement code review and local protocol tests. A successful
+scan does not prove absence of vulnerabilities. Supported-pattern push protection
+does not detect every possible secret, including arbitrary custom lab secrets.
 
 ## Sources
 
